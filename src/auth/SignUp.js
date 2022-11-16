@@ -1,87 +1,52 @@
-import React from "react";
+import React, { useState } from "react";
 import axios from "axios";
 
-class SignUp extends React.Component{
-  constructor(props){
-    super(props);
+function SignUp(props) {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
-    this.state = {
-      // JSON 형식
-      username: "",
-      password: ""
-    };
-  }
-
-  handleKeyUp = event => {
-    console.log(event);
-    switch (event.key) {
-      case "Enter":
-        this.authenticate();
-        break;
-      
-      default:
-
-    }
-  }
-
-  handleClickSignUp = event => {
+  function handleSubmit(event) {
     console.log(event);
 
-    this.authenticate();
+    requestSignUp(username, password);
+
+    event.preventDefault();
   }
 
-  handleChangeInput = event => {
-    console.log(event);
+  return (
+    <form onSubmit={handleSubmit}>
+      회원가입
 
-    this.setState({
-      [event.target.id]: event.target.value
-    });
-  }
-
-  authenticate = () => {
-
-    let requestData = {
-      username: this.state.username,
-      password: this.state.password
-    }
-
-    
-    axios.defaults.withCredentials = true;
-    axios.post("http://localhost:8080/signUp", requestData, {
-      withCredentials: true
-    }).then(response => {
-      console.log(response);
-
-      let {authToken} = response.data;
-      
-      this.props.setAuthState({authToken: authToken});
-    });
-  }
-
-  render(){
-    return (
-      <div onKeyUp={this.handleKeyUp}>
-        회원가입
-        <div>
-          <label>Username</label>
-          <input id="username" onChange={this.handleChangeInput}></input>
-        </div>
-
-        <div>
-          <label>Password</label>
-          <input id="password" type="password" onChange={this.handleChangeInput}></input>
-        </div>
-
-        <button onClick={this.handleClickSignUp}>
-            Sign Up
-        </button>
-
-        <button onClick={this.props.handleClickCancel}>
-            Cancel
-        </button>
+      <div>
+        username
+        <input onChange={setUsername}></input>
       </div>
-    );
-  }
+
+      <div>
+        password
+        <input type="password" onChange={setPassword}></input>
+      </div>
+
+      <button type="submit" onClick={handleSubmit}>Sign Up</button>
+      <button onClick={props.handleClickCancel}>Cancel</button>
+    </form>
+  );
+}
+
+function requestSignUp(username, password) {
+  axios.post("/signUp", null, {
+    auth: {
+      username: username,
+      password: password
+    }
+  }).then(response => {
+    console.log(response);
+
+    let { authToken } = response.data;
+
+    axios.defaults.auth = {username, password};
+    axios.defaults.headers.Authorization = authToken;
+  });
 }
 
 export default SignUp;

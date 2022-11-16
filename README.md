@@ -1,3 +1,12 @@
+# DevManager 클라이언트
+
+- 기술 : React, Axios
+
+## 실행 방법
+- 소스 clone 또는 download
+- 라이브러리 설치 : npm i
+- 서버 실행 : npm start
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

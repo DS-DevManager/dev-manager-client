@@ -5,14 +5,16 @@ import DevManager from './DevManager';
 import reportWebVitals from './reportWebVitals';
 
 axios.defaults.withCredentials = true;
-// axios.defaults.headers = {
-//   "Content-Type": `application/json;charset=UTF-8`,
-//   "Accept": "application/json",
+axios.defaults.baseURL = "http://localhost:8080"
+// axios.defaults.headers.Authorization = "";
+axios.defaults.headers = {
+  "Content-Type": `application/json;charset=UTF-8`,
+  "Accept": "application/json",
 
 //   // 추가  
 //   "Access-Control-Allow-Origin": "http://localhost:8080/",
 //   'Access-Control-Allow-Credentials':"true",
-// }
+}
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 

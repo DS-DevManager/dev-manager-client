@@ -1,37 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import SignUp from "./SignUp";
 import SignIn from "./SignIn";
 
-class Auth extends React.Component{
-  constructor(props){
-    super(props);
+function Auth(props) {
+  const [isSignUp, setIsSignUp] = useState(false);
 
-    this.state = {
-      signUp  : false
-    };
-  }
-
-  handleClickSignUp = (event) => {
-    console.log(event);
-
-    this.setState({signUp: true});
-  }
-
-  handleClickCancel = event => {
-    console.log(event);
-    
-    this.setState({signUp: false});
-  }
-
-  render(){
-    return (
-        <div>
-            {!this.state.signUp
-            ? <SignIn setAuthToken={this.props.setAuthToken} handleClickSignUp={this.handleClickSignUp}/>
-            : <SignUp setAuthToken={this.props.setAuthToken} handleClickCancel={this.handleClickCancel}/>}
-        </div>
-    );
-  }
+  return (
+    <div>
+      {!isSignUp
+        ? <SignIn handleClickSignUp={() => setIsSignUp(true)} />
+        : <SignUp handleClickCancel={() => setIsSignUp(false)} />}
+    </div>
+  );
 }
 
 export default Auth;

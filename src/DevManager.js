@@ -1,38 +1,38 @@
-import React from "react";
+import axios from "axios";
+import React, { useState } from "react";
 import Auth from "./auth/Auth";
 import DashBoard from "./manager/DashBoard";
 
-class DevManager extends React.Component{
-  constructor(props){
-    super(props);
+/**
+ * 
+ * @returns 
+ */
+function DevManager() {
+  const [isAuthorized, setIsAuthorized] = useState(false);
 
-    this.state = {
-      authToken: ""
-    };
-  }
+  console.log(axios.defaults.auth)
 
-  setAuthToken = (authToken) => {
-    this.setState({
-      authToken: authToken
+  axios.post("/authorize", {}, {
+    auth: {
+      username: "username",
+      password: "password"
+    }
+  })
+    .then(response => {
+      setIsAuthorized(response.data);
+    }).catch(reason => {
+      console.log(reason);
     });
-  }
 
-  render(){ 
-    const {authToken} = this.state;
-    let username = "USER!@#";
-
-    console.log(this.state);
-
-    return (
+  return (
+    <div>
+      <header></header>
       <div>
-        <header></header>
-        <div>
-          {authToken === "" ? <Auth setAuthState={this.setAuthToken}/> : <DashBoard username={username}/>}
-        </div>
-        <footer></footer>
+        {isAuthorized === false ? <Auth /> : <DashBoard />}
       </div>
-    );
-  }
+      <footer></footer>
+    </div>
+  );
 }
 
 export default DevManager;
